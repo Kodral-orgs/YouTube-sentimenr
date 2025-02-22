@@ -1,35 +1,69 @@
 {
-    "name": "YouTube Sentiment Analyzer",
-    "dockerFile": "../Dockerfile",
-    "workspaceFolder": "/workspace",
-    
-    "customizations": {
-        "vscode": {
-            "settings": {
-                "python.defaultInterpreterPath": "/usr/local/bin/python",
-                "python.linting.enabled": true,
-                "python.linting.pylintEnabled": true,
-                "typescript.tsdk": "node_modules/typescript/lib",
-                "python.formatting.provider": "black"
-            },
-            "extensions": [
-                "ms-python.python",
-                "ms-python.vscode-pylance",
-                "dbaeumer.vscode-eslint",
-                "esbenp.prettier-vscode",
-                "ms-azuretools.vscode-docker"
-            ]
-        }
+  "name": "YouTube Insight Analyzer",
+  "image": "mcr.microsoft.com/devcontainers/universal:2-linux",
+  "hostRequirements": {
+    "cpus": 16,
+    "memory": "64gb",
+    "storage": "32gb"
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.9"
     },
-    "forwardPorts": [3000, 5000],
-    "postCreateCommand": "bash .devcontainer/postCreateCommand.sh",
-    "remoteUser": "vscode",
-    "features": {
-        "ghcr.io/devcontainers/features/node:1": {
-            "version": "16"
-        },
-        "ghcr.io/devcontainers/features/python:1": {
-            "version": "3.9"
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:1": {},
+    "ghcr.io/devcontainers-extra/features/cyclonedx-python:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-azuretools.vscode-docker",
+        "streetsidesoftware.code-spell-checker",
+        "github.copilot",
+        "github.vscode-github-actions"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": true,
+        "python.formatting.provider": "black",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": true
         }
+      }
     }
+  },
+  "forwardPorts": [3000, 5000, 5432],
+  "containerEnv": {
+    "PYTHONUNBUFFERED": "1",
+    "FLASK_APP": "run.py",
+    "FLASK_ENV": "development",
+    "NODE_ENV": "development"
+  },
+  "initializeCommand": "mkdir -p ${localWorkspaceFolder}/.vscode-server/data",
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "postStartCommand": "bash .devcontainer/post-start.sh",
+  "mounts": [
+    "source=${localWorkspaceFolder}/.vscode-server/data,target=/home/vscode/.vscode-server/data,type=bind,consistency=cached"
+  ],
+  "remoteUser": "vscode",
+  "customizations": {
+    "codespaces": {
+      "prebuilds": {
+        "enabled": true,
+        "branches": ["main", "develop"],
+        "pullRequests": true,
+        "addCheck": true,
+        "addBadge": true,
+        "addLabel": true
+      }
+    }
+  }
 }
