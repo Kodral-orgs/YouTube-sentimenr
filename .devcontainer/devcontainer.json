@@ -1,0 +1,35 @@
+{
+    "name": "YouTube Sentiment Analyzer",
+    "dockerFile": "../Dockerfile",
+    "workspaceFolder": "/workspace",
+    
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "python.defaultInterpreterPath": "/usr/local/bin/python",
+                "python.linting.enabled": true,
+                "python.linting.pylintEnabled": true,
+                "typescript.tsdk": "node_modules/typescript/lib",
+                "python.formatting.provider": "black"
+            },
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode",
+                "ms-azuretools.vscode-docker"
+            ]
+        }
+    },
+    "forwardPorts": [3000, 5000],
+    "postCreateCommand": "bash .devcontainer/postCreateCommand.sh",
+    "remoteUser": "vscode",
+    "features": {
+        "ghcr.io/devcontainers/features/node:1": {
+            "version": "16"
+        },
+        "ghcr.io/devcontainers/features/python:1": {
+            "version": "3.9"
+        }
+    }
+}
